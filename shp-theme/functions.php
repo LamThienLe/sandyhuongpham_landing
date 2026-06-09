@@ -60,14 +60,14 @@ function shp_enqueue() {
 	);
 
 	// Theme stylesheet
-	wp_enqueue_style( 'shp-style', get_stylesheet_uri(), [ 'shp-google-fonts' ], '1.2.0' );
+	wp_enqueue_style( 'shp-style', get_stylesheet_uri(), [ 'shp-google-fonts' ], '1.3.2' );
 
 	// Main JS
 	wp_enqueue_script(
 		'shp-main',
 		get_template_directory_uri() . '/assets/js/main.js',
 		[],
-		'1.2.0',
+		'1.3.2',
 		true
 	);
 
@@ -302,8 +302,78 @@ function shp_create_default_pages() {
 			'post_type'   => 'page',
 		] );
 	}
+
+	// Sub-category landing pages — all use the shared Category Landing template
+	$sub_pages = [
+		'destinations'      => shp_t( 'Điểm Du Lịch', 'Destinations' ),
+		'hotel-reviews'     => shp_t( 'Review Hotel / Resort', 'Hotel Reviews' ),
+		'food'              => shp_t( 'Ẩm Thực', 'Food' ),
+		'wellness'          => shp_t( 'Sức Khoẻ', 'Wellness' ),
+		'beauty'            => shp_t( 'Làm Đẹp', 'Beauty' ),
+		'love-relationships'=> shp_t( 'Tình Yêu & Các Mối Quan Hệ', 'Love & Relationships' ),
+		'business'          => shp_t( 'Kinh Doanh', 'Business' ),
+		'coffee'            => 'Coffee',
+		'cafes'             => shp_t( 'Quán Cà Phê', 'Cafés' ),
+		'wine'              => shp_t( 'Rượu Vang', 'Wine' ),
+	];
+
+	foreach ( $sub_pages as $slug => $title ) {
+		$existing = get_page_by_path( $slug );
+		if ( ! $existing ) {
+			$pid = wp_insert_post( [
+				'post_title'  => $title,
+				'post_name'   => $slug,
+				'post_status' => 'publish',
+				'post_type'   => 'page',
+			] );
+			if ( $pid && ! is_wp_error( $pid ) ) {
+				update_post_meta( $pid, '_wp_page_template', 'page-templates/template-category-landing.php' );
+			}
+		}
+	}
 }
 add_action( 'after_switch_theme', 'shp_create_default_pages' );
+
+/**
+ * Self-heals sub-category pages on admin load.
+ * Creates any missing pages and flushes rewrite rules once.
+ */
+function shp_ensure_sub_pages() {
+	$sub_pages = [
+		'destinations'       => shp_t( 'Điểm Du Lịch', 'Destinations' ),
+		'hotel-reviews'      => shp_t( 'Review Hotel / Resort', 'Hotel Reviews' ),
+		'food'               => shp_t( 'Ẩm Thực', 'Food' ),
+		'wellness'           => shp_t( 'Sức Khoẻ', 'Wellness' ),
+		'beauty'             => shp_t( 'Làm Đẹp', 'Beauty' ),
+		'love-relationships' => shp_t( 'Tình Yêu & Các Mối Quan Hệ', 'Love & Relationships' ),
+		'business'           => shp_t( 'Kinh Doanh', 'Business' ),
+		'coffee'             => 'Coffee',
+		'cafes'              => shp_t( 'Quán Cà Phê', 'Cafés' ),
+		'wine'               => shp_t( 'Rượu Vang', 'Wine' ),
+	];
+
+	$created = false;
+	foreach ( $sub_pages as $slug => $title ) {
+		if ( get_page_by_path( $slug ) ) {
+			continue;
+		}
+		$pid = wp_insert_post( [
+			'post_title'  => $title,
+			'post_name'   => $slug,
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		] );
+		if ( $pid && ! is_wp_error( $pid ) ) {
+			update_post_meta( $pid, '_wp_page_template', 'page-templates/template-category-landing.php' );
+			$created = true;
+		}
+	}
+
+	if ( $created ) {
+		flush_rewrite_rules();
+	}
+}
+add_action( 'admin_init', 'shp_ensure_sub_pages' );
 
 /**
  * Self-heals the Reading Settings on admin load.
