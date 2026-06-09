@@ -60,14 +60,14 @@ function shp_enqueue() {
 	);
 
 	// Theme stylesheet
-	wp_enqueue_style( 'shp-style', get_stylesheet_uri(), [ 'shp-google-fonts' ], '1.3.2' );
+	wp_enqueue_style( 'shp-style', get_stylesheet_uri(), [ 'shp-google-fonts' ], '1.3.3' );
 
 	// Main JS
 	wp_enqueue_script(
 		'shp-main',
 		get_template_directory_uri() . '/assets/js/main.js',
 		[],
-		'1.3.2',
+		'1.3.3',
 		true
 	);
 
@@ -204,6 +204,16 @@ function shp_handle_connect_form() {
 }
 add_action( 'wp_ajax_shp_connect',        'shp_handle_connect_form' );
 add_action( 'wp_ajax_nopriv_shp_connect', 'shp_handle_connect_form' );
+
+/* ============================================================
+   CATEGORY URL HELPER
+   ============================================================ */
+
+/** Return the archive URL for a category looked up by its display name. */
+function shp_cat_url( string $name ): string {
+	$cat = get_term_by( 'name', $name, 'category' );
+	return $cat ? esc_url( get_category_link( $cat->term_id ) ) : '#';
+}
 
 /* ============================================================
    LANGUAGE SWITCHER

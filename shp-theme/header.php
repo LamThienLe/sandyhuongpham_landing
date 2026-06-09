@@ -110,26 +110,20 @@ function shp_fallback_nav_left() {
 	echo '<ul>';
 	echo '<li><a href="' . esc_url( home_url( '/about' ) ) . '">' . shp_t( 'Giới Thiệu', 'About' ) . '</a></li>';
 	echo '<li class="menu-item-has-children"><a href="#" onclick="return false;">' . shp_t( 'Du Lịch', 'Travel' ) . '</a><ul class="sub-menu">';
-	echo '<li><a href="' . esc_url( home_url( '/destinations/' ) ) . '">' . shp_t( 'Điểm Du Lịch', 'Destinations' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/hotel-reviews/' ) ) . '">' . shp_t( 'Review Hotel / Resort', 'Hotel Reviews' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/food/' ) ) . '">' . shp_t( 'Ẩm Thực', 'Food' ) . '</a></li>';
+	echo '<li><a href="' . shp_cat_url( 'Du Lịch' ) . '">' . shp_t( 'Du Lịch', 'Travel' ) . '</a></li>';
+	echo '<li><a href="' . shp_cat_url( 'Giải Trí' ) . '">' . shp_t( 'Giải Trí', 'Entertainment' ) . '</a></li>';
+	echo '<li><a href="' . shp_cat_url( 'Stories' ) . '">Stories</a></li>';
 	echo '</ul></li>';
 	echo '<li class="menu-item-has-children"><a href="#" onclick="return false;">Lifestyle</a><ul class="sub-menu">';
-	echo '<li><a href="' . esc_url( home_url( '/wellness/' ) ) . '">' . shp_t( 'Sức Khoẻ', 'Wellness' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/beauty/' ) ) . '">' . shp_t( 'Làm Đẹp', 'Beauty' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/love-relationships/' ) ) . '">' . shp_t( 'Tình Yêu & Các Mối Quan Hệ', 'Love & Relationships' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/business/' ) ) . '">' . shp_t( 'Kinh Doanh', 'Business' ) . '</a></li>';
+	echo '<li><a href="' . shp_cat_url( 'LifeStyle' ) . '">LifeStyle</a></li>';
+	echo '<li><a href="' . shp_cat_url( 'Kinh Doanh' ) . '">' . shp_t( 'Kinh Doanh', 'Business' ) . '</a></li>';
 	echo '</ul></li>';
 	echo '</ul>';
 }
 
 function shp_fallback_nav_right() {
 	echo '<ul>';
-	echo '<li class="menu-item-has-children"><a href="#" onclick="return false;">' . shp_t( 'Cà Phê & Rượu Vang', 'Coffee & Wine' ) . '</a><ul class="sub-menu">';
-	echo '<li><a href="' . esc_url( home_url( '/coffee/' ) ) . '">Coffee</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/cafes/' ) ) . '">' . shp_t( 'Quán', 'Cafés' ) . '</a></li>';
-	echo '<li><a href="' . esc_url( home_url( '/wine/' ) ) . '">' . shp_t( 'Rượu Vang', 'Wine' ) . '</a></li>';
-	echo '</ul></li>';
+	echo '<li><a href="' . shp_cat_url( 'Tin Tức' ) . '">' . shp_t( 'Tin Tức', 'News' ) . '</a></li>';
 	echo '<li><a href="' . esc_url( shp_blog_url() ) . '">Blog</a></li>';
 	echo '</ul>';
 }
